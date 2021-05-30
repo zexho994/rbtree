@@ -68,6 +68,10 @@ func (n *node) SetRight(r *node) {
 	r.parent = n
 }
 
+func (n *node) IsBlack() bool {
+	return n.color == BLACK
+}
+
 func (n *node) IsRed() bool {
-	return n.color
+	return n.color == RED
 }

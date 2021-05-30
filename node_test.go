@@ -7,6 +7,11 @@ func TestNewNode(t *testing.T) {
 	AssertNotNull(node)
 }
 
+func TestNode_IsBlack(t *testing.T) {
+	n := NewBlackNode(1)
+	AssertIsTrue(n.IsBlack())
+}
+
 func TestNode_IsRed(t *testing.T) {
 	n := NewRedNode(1)
 	AssertIsTrue(n.IsRed())
