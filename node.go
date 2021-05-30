@@ -52,6 +52,23 @@ func (n *node) Parent() *node {
 	return n.parent
 }
 
+func (n *node) Grandfather() *node {
+	if n.Parent() == nil {
+		return nil
+	}
+	return n.Parent().Parent()
+}
+
+func (n *node) Uncle() *node {
+	if n.Grandfather() == nil {
+		return nil
+	}
+	if n.Parent().IsLeft() {
+		return n.Grandfather().Right()
+	}
+	return n.Grandfather().Left()
+}
+
 func (n *node) IsLeaf() bool {
 	return n.isNil
 }
