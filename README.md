@@ -18,5 +18,4 @@
 
 ## 整体流程
 ### 插入操作
-![](https://tva1.sinaimg.cn/large/008i3skNgy1gqzpux3o4kj30xj0u0457.jpg)
-![](https://tva1.sinaimg.cn/large/008i3skNgy1gqzpvcyhdcj30u010t0zw.jpg)
+![](https://tva1.sinaimg.cn/large/008i3skNgy1gr0ul09vtaj30u011z14j.jpg)
