@@ -75,3 +75,25 @@ func Test_LeftRotate(t *testing.T) {
 
 	AssertIsTrue(!leftRotate(r.Find(20)))
 }
+
+//  	   	 11b                   11b
+//        4b     20b             2r   20b
+//      2r   6b        ->      1b 4b
+//    1b 3b     		     	 3b 6b
+func Test_RightRotate(t *testing.T) {
+	r := NewRbTree(11)
+	r.Root().SetLeft(NewRedNode(4))
+	r.Root().SetRight(NewRedNode(20))
+	r.Root().Left().SetLeft(NewBlackNode(2))
+	r.Root().Left().SetRight(NewBlackNode(6))
+	r.Root().Left().Left().SetLeft(NewRedNode(1))
+	r.Insert(3)
+
+	AssertIsTrue(rightRotate(r.Find(4)))
+	AssertNotTrue(rightRotate(r.Find(20)))
+	AssertNotTrue(rightRotate(r.Find(1)))
+	AssertIsTrue(r.Find(2).Left().Val() == 1)
+	AssertIsTrue(r.Find(2).Right().Val() == 4)
+	AssertIsTrue(r.Find(4).Left().Val() == 3)
+	AssertIsTrue(r.Find(4).Right().Val() == 6)
+}

@@ -102,3 +102,21 @@ func leftRotate(x *node) bool {
 	c.SetLeft(x)
 	return true
 }
+
+// 1.x父节点的子指针指向x左节点B
+// 2.x左节点指向B右节点
+// 3.B右节点指向x
+func rightRotate(x *node) bool {
+	if x == nil || x.IsLeaf() || x.Left().IsLeaf() {
+		return false
+	}
+	b := x.Left()
+	if x.IsLeft() {
+		x.Parent().SetLeft(b)
+	} else {
+		x.Parent().SetRight(b)
+	}
+	x.SetLeft(b.Right())
+	b.SetRight(x)
+	return true
+}
