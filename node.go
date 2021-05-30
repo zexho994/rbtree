@@ -70,6 +70,14 @@ func (n *node) SetRight(r *node) {
 	r.parent = n
 }
 
+func (n *node) TurnRed() {
+	n.color = RED
+}
+
+func (n *node) TurnBlack() {
+	n.color = BLACK
+}
+
 func (n *node) IsBlack() bool {
 	return n.color == BLACK
 }
