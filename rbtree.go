@@ -10,8 +10,12 @@ func NewRbTree(v V) *rbTree {
 	}
 }
 
-func (tree *rbTree) Find(v V) *node {
-	m := tree.root
+func (t *rbTree) Root() *node {
+	return t.root
+}
+
+func (t *rbTree) Find(v V) *node {
+	m := t.root
 	for m != nil {
 		if v > m.val {
 			m = m.right
