@@ -17,37 +17,34 @@ func TestRbTree_Find(t *testing.T) {
 	AssertIsTrue(t1.Find(4).IsLeaf())
 }
 
-// 				 11b                   11b             11b
-//            4r    20r             4r    20r        4b   20b
-//          2b   6b         ->    2b  6b       ->   2r 6b
-//        1r                    1r 3r             1b 3b
-//                                               0r
+//            11b
+//        2r       25b
+//      1b   4b  20r  50r
 func TestRbTree_Insert(t *testing.T) {
-	r := NewRbTree(11)
-	r.Root().SetLeft(NewRedNode(4))
-	r.Root().SetRight(NewRedNode(20))
-	r.Root().Left().SetLeft(NewBlackNode(2))
-	r.Root().Left().SetRight(NewBlackNode(6))
-	r.Root().Left().Left().SetLeft(NewRedNode(1))
-	AssertIsTrue(r.Find(2).IsNonLeaf())
-	AssertIsTrue(r.Find(3).IsLeaf())
+	rbt := NewRbTree(11)
+	rbt.Insert(4)
+	rbt.Insert(20)
+	rbt.Insert(2)
+	rbt.Insert(1)
+	rbt.Insert(50)
+	rbt.Insert(25)
 
-	r.Insert(3)
-	f := r.Find(3)
-	AssertIsTrue(f.IsNonLeaf())
-	AssertIsTrue(f.Grandfather().Val() == 4)
-	AssertIsTrue(f.Uncle().Val() == 6)
-	AssertIsTrue(r.Find(4).Uncle() == nil)
-	AssertIsTrue(r.Find(11).Uncle() == nil)
+	// check val
+	AssertIsTrue(rbt.Find(11).Left().Val() == 2)
+	AssertIsTrue(rbt.Find(11).Right().Val() == 25)
+	AssertIsTrue(rbt.Find(2).Left().Val() == 1)
+	AssertIsTrue(rbt.Find(2).Right().Val() == 4)
+	AssertIsTrue(rbt.Find(25).Left().Val() == 20)
+	AssertIsTrue(rbt.Find(25).Right().Val() == 50)
 
-	r.Insert(0)
-	AssertIsTrue(r.Find(1).IsBlack())
-	AssertIsTrue(r.Find(3).IsBlack())
-	AssertIsTrue(r.Find(2).IsRed())
-	AssertIsTrue(r.Find(6).IsBlack())
-	AssertIsTrue(r.Find(4).IsBlack())
-	AssertIsTrue(r.Find(20).IsBlack())
-	AssertIsTrue(r.Find(11).IsBlack())
+	// check color
+	AssertIsTrue(rbt.Find(11).Left().IsBlack())
+	AssertIsTrue(rbt.Find(11).Right().IsBlack())
+	AssertIsTrue(rbt.Find(2).Left().IsRed())
+	AssertIsTrue(rbt.Find(2).Right().IsRed())
+	AssertIsTrue(rbt.Find(25).Left().IsRed())
+	AssertIsTrue(rbt.Find(25).Right().IsRed())
+
 }
 
 //  	   	 11b                  11b
