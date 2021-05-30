@@ -5,6 +5,13 @@ import "testing"
 func TestNewNode(t *testing.T) {
 	node := NewRedNode(1)
 	AssertNotNull(node)
+	AssertNotNull(node.Left().Parent())
+	AssertNotNull(node.Right().Parent())
+
+	node = NewBlackNode(1)
+	AssertNotNull(node)
+	AssertNotNull(node.Left().Parent())
+	AssertNotNull(node.Right().Parent())
 }
 
 func TestNode_IsBlack(t *testing.T) {

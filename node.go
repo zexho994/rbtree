@@ -15,23 +15,25 @@ type node struct {
 }
 
 func NewRedNode(v V) *node {
-	return &node{
+	n := &node{
 		val:   v,
-		left:  &node{color: BLACK, isNil: true},
-		right: &node{color: BLACK, isNil: true},
 		color: RED,
 		isNil: false,
 	}
+	n.left = &node{color: BLACK, isNil: true, parent: n}
+	n.right = &node{color: BLACK, isNil: true, parent: n}
+	return n
 }
 
 func NewBlackNode(v V) *node {
-	return &node{
+	n := &node{
 		val:   v,
-		left:  &node{color: BLACK, isNil: true},
-		right: &node{color: BLACK, isNil: true},
 		color: BLACK,
 		isNil: false,
 	}
+	n.left = &node{color: BLACK, isNil: true, parent: n}
+	n.right = &node{color: BLACK, isNil: true, parent: n}
+	return n
 }
 
 func (n *node) Val() V {
