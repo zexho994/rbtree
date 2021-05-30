@@ -1,18 +1,18 @@
 package red_black_trees
 
-func NotNull(n *node) {
+func AssertNotNull(n *node) {
 	if n == nil {
 		panic("fail")
 	}
 }
 
-func IsTrue(c bool) {
+func AssertIsTrue(c bool) {
 	if !c {
 		panic("fail")
 	}
 }
 
-func NotTrue(c bool) {
+func AssertNotTrue(c bool) {
 	if c {
 		panic("fail")
 	}

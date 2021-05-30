@@ -4,13 +4,13 @@ import "testing"
 
 func TestNewRbTree(t *testing.T) {
 	t1 := NewRbTree(1)
-	IsTrue(t1.root.IsRed())
+	AssertIsTrue(t1.root.IsRed())
 }
 
 func TestRbTree_Find(t *testing.T) {
 	t1 := NewRbTree(2)
 	t1.Root().SetLeft(NewNode(1))
 	t1.Root().SetRight(NewNode(3))
-	NotNull(t1.Find(1))
-	NotNull(t1.Find(3))
+	AssertNotNull(t1.Find(1))
+	AssertNotNull(t1.Find(3))
 }

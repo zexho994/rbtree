@@ -1,5 +1,6 @@
 package red_black_trees
 
+// rb.node is do not allow duplication
 type rbTree struct {
 	root *node
 }
@@ -27,4 +28,8 @@ func (t *rbTree) Find(v V) *node {
 	}
 
 	return nil
+}
+
+func (t *rbTree) Insert(v V) {
+
 }
