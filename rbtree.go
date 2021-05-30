@@ -84,11 +84,14 @@ func IsRoot(n *node) bool {
 	return n.parent == nil
 }
 
+// 1. x父指针的子指针指向c
+// 2. x的右子指针指向c的左子节点
+// 3. c的左子指针指向x
 func leftRotate(x *node) bool {
-	var c *node
-	if c = x.Right(); c.IsLeaf() {
+	if x == nil || x.IsLeaf() || x.Right().IsLeaf() {
 		return false
 	}
+	c := x.Right()
 	if x.IsLeft() {
 		x.Parent().SetLeft(c)
 	} else {
