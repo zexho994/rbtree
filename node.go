@@ -85,3 +85,18 @@ func (n *node) IsBlack() bool {
 func (n *node) IsRed() bool {
 	return n.color == RED
 }
+
+func (n *node) IsLeft() bool {
+	if n.Parent() == nil {
+		panic("node parent is nil")
+	}
+	if n.Val() < n.Parent().Val() {
+		return true
+	} else {
+		return false
+	}
+}
+
+func (n *node) IsRight() bool {
+	return !n.IsLeft()
+}
