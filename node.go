@@ -11,14 +11,26 @@ type node struct {
 	right  *node
 	parent *node
 	color  bool
+	isNil  bool // leaf-node is nil
 }
 
-func NewNode(v V) *node {
+func NewRedNode(v V) *node {
 	return &node{
 		val:   v,
-		left:  nil,
-		right: nil,
+		left:  &node{color: BLACK, isNil: true},
+		right: &node{color: BLACK, isNil: true},
 		color: RED,
+		isNil: false,
+	}
+}
+
+func NewBlackNode(v V) *node {
+	return &node{
+		val:   v,
+		left:  &node{color: BLACK, isNil: true},
+		right: &node{color: BLACK, isNil: true},
+		color: BLACK,
+		isNil: false,
 	}
 }
 
@@ -36,6 +48,14 @@ func (n *node) Right() *node {
 
 func (n *node) Parent() *node {
 	return n.parent
+}
+
+func (n *node) IsLeaf() bool {
+	return n.isNil
+}
+
+func (n *node) IsNonLeaf() bool {
+	return !n.isNil
 }
 
 func (n *node) SetLeft(l *node) {
