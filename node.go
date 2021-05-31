@@ -6,121 +6,142 @@ const RED = true
 type V int
 
 type node struct {
-	val    V
-	left   *node
-	right  *node
-	parent *node
-	color  bool
-	isNil  bool // leaf-node is nil
+	v   V     // val
+	l   *node // left node
+	r   *node // right node
+	p   *node // parent
+	c   bool  // color
+	nil bool  // leaf-node is nil
 }
 
-func NewRedNode(v V) *node {
+func newRedNode(v V) *node {
 	n := &node{
-		val:   v,
-		color: RED,
-		isNil: false,
+		v: v,
+		c: RED,
 	}
-	n.left = &node{color: BLACK, isNil: true, parent: n}
-	n.right = &node{color: BLACK, isNil: true, parent: n}
+	n.l = &node{c: BLACK, nil: true, p: n}
+	n.r = &node{c: BLACK, nil: true, p: n}
 	return n
 }
 
-func NewBlackNode(v V) *node {
+func newBlackNode(v V) *node {
 	n := &node{
-		val:   v,
-		color: BLACK,
-		isNil: false,
+		v: v,
+		c: BLACK,
 	}
-	n.left = &node{color: BLACK, isNil: true, parent: n}
-	n.right = &node{color: BLACK, isNil: true, parent: n}
+	n.l = &node{c: BLACK, nil: true, p: n}
+	n.r = &node{c: BLACK, nil: true, p: n}
 	return n
 }
 
-func (n *node) Val() V {
-	return n.val
+func newNilNode() *node {
+	return &node{
+		v:   0,
+		c:   BLACK,
+		nil: true,
+	}
 }
 
-func (n *node) Left() *node {
-	return n.left
+func (n *node) val() V {
+	return n.v
 }
 
-func (n *node) Right() *node {
-	return n.right
+func (n *node) left() *node {
+	return n.l
 }
 
-func (n *node) Parent() *node {
-	return n.parent
+func (n *node) right() *node {
+	return n.r
 }
 
-func (n *node) Brother() *node {
-	if n == nil || n.Parent() == nil {
+func (n *node) parent() *node {
+	return n.p
+}
+
+func (n *node) setParent(p *node) {
+	n.p = p
+}
+
+func (n *node) brother() *node {
+	if n == nil || n.parent() == nil {
 		return nil
 	}
-	if n.IsLeft() {
-		return n.Parent().Right()
+	if n.isLeft() {
+		return n.parent().right()
 	} else {
-		return n.Parent().Left()
+		return n.parent().left()
 	}
 }
 
-func (n *node) Grandfather() *node {
-	if n.Parent() == nil {
+func (n *node) grandfather() *node {
+	if n.parent() == nil {
 		return nil
 	}
-	return n.Parent().Parent()
+	return n.parent().parent()
 }
 
-func (n *node) Uncle() *node {
-	if n.Grandfather() == nil {
+func (n *node) uncle() *node {
+	if n.grandfather() == nil {
 		return nil
 	}
-	if n.Parent().IsLeft() {
-		return n.Grandfather().Right()
+	if n.parent().isLeft() {
+		return n.grandfather().right()
 	}
-	return n.Grandfather().Left()
+	return n.grandfather().left()
 }
 
-func (n *node) IsLeaf() bool {
-	return n.isNil
-}
-
-func (n *node) IsNonLeaf() bool {
-	return !n.isNil
-}
-
-func (n *node) SetLeft(l *node) {
-	n.left = l
-	l.parent = n
-}
-
-func (n *node) SetRight(r *node) {
-	n.right = r
-	r.parent = n
-}
-
-func (n *node) TurnRed() {
-	n.color = RED
-}
-
-func (n *node) TurnBlack() {
-	n.color = BLACK
-}
-
-func (n *node) IsBlack() bool {
-	return n.color == BLACK
-}
-
-func (n *node) IsRed() bool {
-	return n.color == RED
-}
-
-func (n *node) IsLeft() bool {
-	if n.Parent() == nil {
-		panic("node parent is nil")
+func (n *node) sonCount() (s int) {
+	s = 2
+	if n.left().isLeaf() {
+		s--
 	}
-	return n.Val() < n.Parent().Val()
+	if n.r.isLeaf() {
+		s--
+	}
+	return
 }
 
-func (n *node) IsRight() bool {
-	return !n.IsLeft()
+func (n *node) isLeaf() bool {
+	return n.nil
+}
+
+func (n *node) isNonLeaf() bool {
+	return !n.nil
+}
+
+func (n *node) setLeft(l *node) {
+	n.l = l
+	l.p = n
+}
+
+func (n *node) setRight(r *node) {
+	n.r = r
+	r.p = n
+}
+
+func (n *node) turnRed() {
+	n.c = RED
+}
+
+func (n *node) turnBlack() {
+	n.c = BLACK
+}
+
+func (n *node) isBlack() bool {
+	return n.c == BLACK
+}
+
+func (n *node) isRed() bool {
+	return n.c == RED
+}
+
+func (n *node) isLeft() bool {
+	if n.parent() == nil {
+		panic("node p is nil")
+	}
+	return n.val() < n.parent().val()
+}
+
+func (n *node) isRight() bool {
+	return !n.isLeft()
 }

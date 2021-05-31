@@ -3,62 +3,62 @@ package red_black_trees
 import "testing"
 
 func TestNewNode(t *testing.T) {
-	node := NewRedNode(1)
+	node := newRedNode(1)
 	AssertNotNull(node)
-	AssertNotNull(node.Left().Parent())
-	AssertNotNull(node.Right().Parent())
+	AssertNotNull(node.left().parent())
+	AssertNotNull(node.right().parent())
 
-	node = NewBlackNode(1)
+	node = newBlackNode(1)
 	AssertNotNull(node)
-	AssertNotNull(node.Left().Parent())
-	AssertNotNull(node.Right().Parent())
+	AssertNotNull(node.left().parent())
+	AssertNotNull(node.right().parent())
 }
 
 func TestNode_IsBlack(t *testing.T) {
-	n := NewBlackNode(1)
-	AssertIsTrue(n.IsBlack())
+	n := newBlackNode(1)
+	AssertIsTrue(n.isBlack())
 }
 
 func TestNode_IsRed(t *testing.T) {
-	n := NewRedNode(1)
-	AssertIsTrue(n.IsRed())
+	n := newRedNode(1)
+	AssertIsTrue(n.isRed())
 }
 
 func TestNode_Left(t *testing.T) {
-	n1 := NewBlackNode(1)
-	n2 := NewBlackNode(2)
-	n1.SetLeft(n2)
-	AssertIsTrue(n1.Left().Val() == 2)
-	AssertIsTrue(n1.Left().Parent() == n1)
-	AssertIsTrue(!n1.Left().IsLeaf())
-	AssertIsTrue(n1.Left().Left().IsLeaf())
-	AssertIsTrue(!n1.Left().IsRed())
+	n1 := newBlackNode(1)
+	n2 := newBlackNode(2)
+	n1.setLeft(n2)
+	AssertIsTrue(n1.left().val() == 2)
+	AssertIsTrue(n1.left().parent() == n1)
+	AssertIsTrue(!n1.left().isLeaf())
+	AssertIsTrue(n1.left().left().isLeaf())
+	AssertIsTrue(!n1.left().isRed())
 }
 
 func TestNode_Right(t *testing.T) {
-	n1 := NewBlackNode(1)
-	n2 := NewBlackNode(2)
-	n1.SetRight(n2)
+	n1 := newBlackNode(1)
+	n2 := newBlackNode(2)
+	n1.setRight(n2)
 
-	AssertIsTrue(n1.Right().Val() == 2)
-	AssertIsTrue(n1.Right().Parent() == n1)
-	AssertIsTrue(!n1.Right().IsLeaf())
-	AssertIsTrue(n1.Right().Right().IsLeaf())
-	AssertIsTrue(!n1.Right().IsRed())
+	AssertIsTrue(n1.right().val() == 2)
+	AssertIsTrue(n1.right().parent() == n1)
+	AssertIsTrue(!n1.right().isLeaf())
+	AssertIsTrue(n1.right().right().isLeaf())
+	AssertIsTrue(!n1.right().isRed())
 }
 
 func TestNode_Val(t *testing.T) {
-	n1 := NewRedNode(1)
-	AssertIsTrue(n1.Val() == 1)
+	n1 := newRedNode(1)
+	AssertIsTrue(n1.val() == 1)
 }
 
 func TestNode_Parent(t *testing.T) {
-	n1 := NewBlackNode(2)
-	n2 := NewBlackNode(1)
-	n3 := NewBlackNode(3)
-	n1.SetLeft(n2)
-	n1.SetRight(n3)
+	n1 := newBlackNode(2)
+	n2 := newBlackNode(1)
+	n3 := newBlackNode(3)
+	n1.setLeft(n2)
+	n1.setRight(n3)
 
-	AssertIsTrue(n1.Left().Parent() == n1)
-	AssertIsTrue(n1.Right().Parent() == n1)
+	AssertIsTrue(n1.left().parent() == n1)
+	AssertIsTrue(n1.right().parent() == n1)
 }

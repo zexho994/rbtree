@@ -3,58 +3,58 @@ package red_black_trees
 import "testing"
 
 func TestNewRbTree(t *testing.T) {
-	t1 := NewRbTree(1)
-	AssertIsTrue(!t1.root.IsRed())
+	t1 := newRbTree(1)
+	AssertIsTrue(!t1.r.isRed())
 }
 
 func TestRbTree_Find(t *testing.T) {
-	t1 := NewRbTree(2)
-	t1.Root().SetLeft(NewRedNode(1))
-	t1.Root().SetRight(NewRedNode(3))
-	AssertNotNull(t1.Find(1))
-	AssertNotNull(t1.Find(3))
-	AssertIsTrue(!t1.Find(3).IsLeaf())
-	AssertIsTrue(t1.Find(4).IsLeaf())
+	t1 := newRbTree(2)
+	t1.root().setLeft(newRedNode(1))
+	t1.root().setRight(newRedNode(3))
+	AssertNotNull(t1.find(1))
+	AssertNotNull(t1.find(3))
+	AssertIsTrue(!t1.find(3).isLeaf())
+	AssertIsTrue(t1.find(4).isLeaf())
 }
 
 //            11b
 //        2r       25b
 //      1b   4b  20r  50r
 func TestRbTree_Insert(t *testing.T) {
-	rbt := NewRbTree(11)
-	rbt.Insert(4)
-	rbt.Insert(20)
-	rbt.Insert(2)
-	rbt.Insert(1)
-	rbt.Insert(50)
-	rbt.Insert(25)
+	rbt := newRbTree(11)
+	rbt.insert(4)
+	rbt.insert(20)
+	rbt.insert(2)
+	rbt.insert(1)
+	rbt.insert(50)
+	rbt.insert(25)
 
-	// check val
-	AssertIsTrue(rbt.Find(11).Left().Val() == 2)
-	AssertIsTrue(rbt.Find(11).Right().Val() == 25)
-	AssertIsTrue(rbt.Find(2).Left().Val() == 1)
-	AssertIsTrue(rbt.Find(2).Right().Val() == 4)
-	AssertIsTrue(rbt.Find(25).Left().Val() == 20)
-	AssertIsTrue(rbt.Find(25).Right().Val() == 50)
+	// check v
+	AssertIsTrue(rbt.find(11).left().val() == 2)
+	AssertIsTrue(rbt.find(11).right().val() == 25)
+	AssertIsTrue(rbt.find(2).left().val() == 1)
+	AssertIsTrue(rbt.find(2).right().val() == 4)
+	AssertIsTrue(rbt.find(25).left().val() == 20)
+	AssertIsTrue(rbt.find(25).right().val() == 50)
 
-	// check color
-	AssertIsTrue(rbt.Find(11).Left().IsBlack())
-	AssertIsTrue(rbt.Find(11).Right().IsBlack())
-	AssertIsTrue(rbt.Find(2).Left().IsRed())
-	AssertIsTrue(rbt.Find(2).Right().IsRed())
-	AssertIsTrue(rbt.Find(25).Left().IsRed())
-	AssertIsTrue(rbt.Find(25).Right().IsRed())
+	// check c
+	AssertIsTrue(rbt.find(11).left().isBlack())
+	AssertIsTrue(rbt.find(11).right().isBlack())
+	AssertIsTrue(rbt.find(2).left().isRed())
+	AssertIsTrue(rbt.find(2).right().isRed())
+	AssertIsTrue(rbt.find(25).left().isRed())
+	AssertIsTrue(rbt.find(25).right().isRed())
 }
 
 func TestRbTree_Insert2(t *testing.T) {
-	rbt := NewRbTree(10)
-	rbt.Insert(5)
-	rbt.Insert(1)
-	rbt.Insert(0)
+	rbt := newRbTree(10)
+	rbt.insert(5)
+	rbt.insert(1)
+	rbt.insert(0)
 
-	AssertIsTrue(IsRoot(rbt.Find(5)))
-	AssertIsTrue(rbt.Find(5).Left().Val() == 1)
-	AssertIsTrue(rbt.Find(5).Right().Val() == 10)
+	AssertIsTrue(isRoot(rbt.find(5)))
+	AssertIsTrue(rbt.find(5).left().val() == 1)
+	AssertIsTrue(rbt.find(5).right().val() == 10)
 }
 
 //  	   	 11b                  11b
@@ -62,25 +62,25 @@ func TestRbTree_Insert2(t *testing.T) {
 //      2r   6b        ->     4b 7r
 //    1b 3b 5r 7r		    2r 5r
 func Test_LeftRotate(t *testing.T) {
-	r := NewRbTree(11)
-	r.Root().SetLeft(NewRedNode(4))
-	r.Root().SetRight(NewRedNode(20))
-	r.Root().Left().SetLeft(NewBlackNode(2))
-	r.Root().Left().SetRight(NewBlackNode(6))
-	r.Root().Left().Left().SetLeft(NewRedNode(1))
-	r.Root().Left().Right().SetLeft(NewRedNode(5))
-	r.Root().Left().Right().SetRight(NewRedNode(7))
-	r.Insert(3)
+	r := newRbTree(11)
+	r.root().setLeft(newRedNode(4))
+	r.root().setRight(newRedNode(20))
+	r.root().left().setLeft(newBlackNode(2))
+	r.root().left().setRight(newBlackNode(6))
+	r.root().left().left().setLeft(newRedNode(1))
+	r.root().left().right().setLeft(newRedNode(5))
+	r.root().left().right().setRight(newRedNode(7))
+	r.insert(3)
 
-	AssertIsTrue(r.leftRotate(r.Find(4)))
-	n6 := r.Find(6)
-	AssertIsTrue(IsRoot(n6.Parent()))
-	AssertIsTrue(n6.Left().Val() == 4)
-	AssertIsTrue(n6.Right().Val() == 7)
-	AssertIsTrue(n6.Left().Left().Val() == 2)
-	AssertIsTrue(n6.Left().Right().Val() == 5)
+	AssertIsTrue(r.leftRotate(r.find(4)))
+	n6 := r.find(6)
+	AssertIsTrue(isRoot(n6.parent()))
+	AssertIsTrue(n6.left().val() == 4)
+	AssertIsTrue(n6.right().val() == 7)
+	AssertIsTrue(n6.left().left().val() == 2)
+	AssertIsTrue(n6.left().right().val() == 5)
 
-	AssertIsTrue(!r.leftRotate(r.Find(20)))
+	AssertIsTrue(!r.leftRotate(r.find(20)))
 }
 
 //  	   	 11b                   11b
@@ -88,60 +88,60 @@ func Test_LeftRotate(t *testing.T) {
 //      2r   6b        ->      1b 4b
 //    1b 3b     		     	 3b 6b
 func Test_RightRotate(t *testing.T) {
-	r := NewRbTree(11)
-	r.Root().SetLeft(NewRedNode(4))
-	r.Root().SetRight(NewRedNode(20))
-	r.Root().Left().SetLeft(NewBlackNode(2))
-	r.Root().Left().SetRight(NewBlackNode(6))
-	r.Root().Left().Left().SetLeft(NewRedNode(1))
-	r.Insert(3)
+	r := newRbTree(11)
+	r.root().setLeft(newRedNode(4))
+	r.root().setRight(newRedNode(20))
+	r.root().left().setLeft(newBlackNode(2))
+	r.root().left().setRight(newBlackNode(6))
+	r.root().left().left().setLeft(newRedNode(1))
+	r.insert(3)
 
-	AssertIsTrue(r.rightRotate(r.Find(4)))
-	AssertNotTrue(r.rightRotate(r.Find(20)))
-	AssertNotTrue(r.rightRotate(r.Find(1)))
-	AssertIsTrue(r.Find(2).Left().Val() == 1)
-	AssertIsTrue(r.Find(2).Right().Val() == 4)
-	AssertIsTrue(r.Find(4).Left().Val() == 3)
-	AssertIsTrue(r.Find(4).Right().Val() == 6)
+	AssertIsTrue(r.rightRotate(r.find(4)))
+	AssertNotTrue(r.rightRotate(r.find(20)))
+	AssertNotTrue(r.rightRotate(r.find(1)))
+	AssertIsTrue(r.find(2).left().val() == 1)
+	AssertIsTrue(r.find(2).right().val() == 4)
+	AssertIsTrue(r.find(4).left().val() == 3)
+	AssertIsTrue(r.find(4).right().val() == 6)
 }
 
 func TestIsRbTree(t *testing.T) {
-	rbt := NewRbTree(11)
-	rbt.Insert(4)
-	rbt.Insert(20)
-	rbt.Insert(2)
-	rbt.Insert(1)
-	rbt.Insert(50)
-	rbt.Insert(25)
-	rbt.Insert(132)
-	rbt.Insert(42)
-	rbt.Insert(58)
-	rbt.Insert(53)
-	rbt.Insert(70)
-	rbt.Insert(-3)
-	rbt.Insert(6)
-	rbt.Insert(20)
-	rbt.Insert(-10)
-	rbt.Insert(100)
+	rbt := newRbTree(11)
+	rbt.insert(4)
+	rbt.insert(20)
+	rbt.insert(2)
+	rbt.insert(1)
+	rbt.insert(50)
+	rbt.insert(25)
+	rbt.insert(132)
+	rbt.insert(42)
+	rbt.insert(58)
+	rbt.insert(53)
+	rbt.insert(70)
+	rbt.insert(-3)
+	rbt.insert(6)
+	rbt.insert(20)
+	rbt.insert(-10)
+	rbt.insert(100)
 
 	var isRbtree func(n *node, s int) int
 	isRbtree = func(n *node, s int) int {
-		if n.IsLeaf() {
+		if n.isLeaf() {
 			return s
 		}
-		if n.IsRed() {
-			if n.Parent().IsRed() {
+		if n.isRed() {
+			if n.parent().isRed() {
 				panic("not is RbTree")
 			}
 		} else {
 			s++
 		}
-		c1 := isRbtree(n.left, s)
-		c2 := isRbtree(n.right, s)
+		c1 := isRbtree(n.l, s)
+		c2 := isRbtree(n.r, s)
 		if c1 != c2 {
 			panic("not is RbTree")
 		}
 		return c1
 	}
-	isRbtree(rbt.Root(), 0)
+	isRbtree(rbt.root(), 0)
 }
