@@ -104,3 +104,40 @@ func Test_RightRotate(t *testing.T) {
 	AssertIsTrue(r.Find(4).Left().Val() == 3)
 	AssertIsTrue(r.Find(4).Right().Val() == 6)
 }
+
+func TestIsRbTree(t *testing.T) {
+	rbt := NewRbTree(11)
+	rbt.Insert(4)
+	rbt.Insert(20)
+	rbt.Insert(2)
+	rbt.Insert(1)
+	rbt.Insert(50)
+	//rbt.Insert(25)
+	rbt.Insert(132)
+	rbt.Insert(42)
+	rbt.Insert(58)
+	rbt.Insert(53)
+	rbt.Insert(70)
+	rbt.Insert(16)
+
+	var isRbtree func(n *node, s int) int
+	isRbtree = func(n *node, s int) int {
+		if n.IsLeaf() {
+			return s
+		}
+		if n.IsRed() {
+			if n.Parent().IsRed() {
+				panic("not is RbTree")
+			}
+		} else {
+			s++
+		}
+		c1 := isRbtree(n.left, s)
+		c2 := isRbtree(n.right, s)
+		if c1 != c2 {
+			panic("not is RbTree")
+		}
+		return c1
+	}
+	isRbtree(rbt.Root(), 0)
+}

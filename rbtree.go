@@ -34,54 +34,54 @@ func (t *rbTree) Find(v V) *node {
 }
 
 func (t *rbTree) Insert(v V) {
-	node := t.Find(v)
-	if node.IsNonLeaf() {
+	n := t.Find(v)
+	if n.IsNonLeaf() {
 		return
 	}
 	// 保存新的节点到对应的位置
-	if parent := node.Parent(); v < parent.Val() {
+	if parent := n.Parent(); v < parent.Val() {
 		parent.SetLeft(NewRedNode(v))
 	} else {
 		parent.SetRight(NewRedNode(v))
 	}
 
 CASE1:
-	if node.Parent().IsBlack() {
+	if n.Parent().IsBlack() {
 		return
 	}
-	if node.Uncle() == nil || node.Uncle().IsBlack() {
+	if n.Uncle() == nil || n.Uncle().IsBlack() {
 		goto CASE2
 	}
 
-	node.Parent().TurnBlack()
-	node.Uncle().TurnBlack()
-	if IsRoot(node.Grandfather()) {
+	n.Parent().TurnBlack()
+	n.Uncle().TurnBlack()
+	if IsRoot(n.Grandfather()) {
 		return
 	}
-	node.Grandfather().TurnRed()
-	node = node.Grandfather()
+	n.Grandfather().TurnRed()
+	n = n.Grandfather()
 	goto CASE1
 
 CASE2: // 当 node父节点的关系 != node父节点与祖父节点的关系 时成立
-	if (node.IsLeft() && node.Parent().IsLeft()) || (node.IsRight() && node.Parent().IsRight()) {
+	if (n.IsLeft() && n.Parent().IsLeft()) || (n.IsRight() && n.Parent().IsRight()) {
 		goto CASE3
 	}
-	if node.IsLeft() {
-		node = node.parent
-		t.rightRotate(node)
+	if n.IsLeft() {
+		n = n.parent
+		t.rightRotate(n)
 	} else {
-		node = node.parent
-		t.leftRotate(node)
+		n = n.parent
+		t.leftRotate(n)
 	}
 
 CASE3: // 当 node父节点的关系 == node父节点与祖父节点的关系 时成立
-	if node.IsLeft() {
-		t.rightRotate(node.Grandfather())
+	if n.IsLeft() {
+		t.rightRotate(n.Grandfather())
 	} else {
-		t.leftRotate(node.Grandfather())
+		t.leftRotate(n.Grandfather())
 	}
-	node.Parent().TurnBlack()
-	node.Brother().TurnRed()
+	n.Parent().TurnBlack()
+	n.Brother().TurnRed()
 }
 
 func IsRoot(n *node) bool {
