@@ -112,13 +112,17 @@ func TestIsRbTree(t *testing.T) {
 	rbt.Insert(2)
 	rbt.Insert(1)
 	rbt.Insert(50)
-	//rbt.Insert(25)
+	rbt.Insert(25)
 	rbt.Insert(132)
 	rbt.Insert(42)
 	rbt.Insert(58)
 	rbt.Insert(53)
 	rbt.Insert(70)
-	rbt.Insert(16)
+	rbt.Insert(-3)
+	rbt.Insert(6)
+	rbt.Insert(20)
+	rbt.Insert(-10)
+	rbt.Insert(100)
 
 	var isRbtree func(n *node, s int) int
 	isRbtree = func(n *node, s int) int {

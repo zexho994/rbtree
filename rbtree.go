@@ -33,6 +33,7 @@ func (t *rbTree) Find(v V) *node {
 	return m
 }
 
+// Insert a node into RbTree
 func (t *rbTree) Insert(v V) {
 	n := t.Find(v)
 	if n.IsNonLeaf() {
@@ -41,8 +42,10 @@ func (t *rbTree) Insert(v V) {
 	// 保存新的节点到对应的位置
 	if parent := n.Parent(); v < parent.Val() {
 		parent.SetLeft(NewRedNode(v))
+		n = parent.Left()
 	} else {
 		parent.SetRight(NewRedNode(v))
+		n = parent.Right()
 	}
 
 CASE1:

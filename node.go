@@ -118,11 +118,7 @@ func (n *node) IsLeft() bool {
 	if n.Parent() == nil {
 		panic("node parent is nil")
 	}
-	if n.Val() < n.Parent().Val() {
-		return true
-	} else {
-		return false
-	}
+	return n.Val() < n.Parent().Val()
 }
 
 func (n *node) IsRight() bool {
