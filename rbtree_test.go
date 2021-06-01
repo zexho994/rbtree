@@ -107,6 +107,63 @@ func Test_RightRotate(t *testing.T) {
 
 func TestIsRbTree(t *testing.T) {
 	rbt := newRbTree(11)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(4)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(20)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(2)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(1)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(50)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(25)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(132)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(42)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(58)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(53)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(70)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(-3)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(6)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(20)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(-10)
+	isRbtree(rbt.root(), 0)
+	rbt.insert(100)
+	isRbtree(rbt.root(), 0)
+}
+
+func isRbtree(n *node, s int) int {
+	if n.isLeaf() {
+		return s
+	}
+	if n.isRed() {
+		if n.parent().isRed() {
+			panic("not is RbTree")
+		}
+	} else {
+		s++
+	}
+	c1 := isRbtree(n.l, s)
+	c2 := isRbtree(n.r, s)
+	if c1 != c2 {
+		panic("not is RbTree")
+	}
+	return c1
+
+}
+
+func TestRbTree_remove(t1 *testing.T) {
+	rbt := newRbTree(11)
 	rbt.insert(4)
 	rbt.insert(20)
 	rbt.insert(2)
@@ -114,34 +171,8 @@ func TestIsRbTree(t *testing.T) {
 	rbt.insert(50)
 	rbt.insert(25)
 	rbt.insert(132)
-	rbt.insert(42)
-	rbt.insert(58)
-	rbt.insert(53)
-	rbt.insert(70)
-	rbt.insert(-3)
-	rbt.insert(6)
-	rbt.insert(20)
-	rbt.insert(-10)
-	rbt.insert(100)
 
-	var isRbtree func(n *node, s int) int
-	isRbtree = func(n *node, s int) int {
-		if n.isLeaf() {
-			return s
-		}
-		if n.isRed() {
-			if n.parent().isRed() {
-				panic("not is RbTree")
-			}
-		} else {
-			s++
-		}
-		c1 := isRbtree(n.l, s)
-		c2 := isRbtree(n.r, s)
-		if c1 != c2 {
-			panic("not is RbTree")
-		}
-		return c1
-	}
+	rbt.remove(25)
 	isRbtree(rbt.root(), 0)
+
 }

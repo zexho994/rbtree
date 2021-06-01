@@ -93,15 +93,14 @@ func (t *rbTree) remove(v V) {
 	if n.isLeaf() {
 		return
 	}
-	if isRoot(n) {
-		t.r = nil
+	if isRoot(n) && t.setRoot(nil) {
 		return
 	}
 	if n.sonCount() == 0 {
 		if n.isLeft() {
-			n.parent().setLeft(newNilNode())
+			n.parent().delLeft()
 		} else {
-			n.parent().setRight(newNilNode())
+			n.parent().delRight()
 		}
 		return
 	}
@@ -114,20 +113,72 @@ func (t *rbTree) remove(v V) {
 		}
 		son.turnBlack()
 		if n.isLeft() {
-			n.parent().setLeft(n.right())
+			n.parent().setLeft(son)
 		} else {
-			n.parent().setRight(n.right())
+			n.parent().setRight(son)
 		}
-		n.setParent(nil)
 		return
 	}
-
-	// n.sonCount() == 2
+	// rm case 2
 	son = n.right()
+	if son.left().isLeaf() {
+		if n.isLeaf() {
+			n.parent().setLeft(son)
+		} else {
+			n.parent().setRight(son)
+		}
+		son.setColor(n.color())
+		n = son.right()
+		n.addExtra()
+		goto ADJUST1
+	}
+	// rm case3
 	for son.left().isNonLeaf() {
 		son = son.left()
 	}
+	son.parent().setLeft(son.right())
+	son.setLeft(n.left())
+	son.setRight(n.right())
+	if n.isLeft() {
+		n.parent().setLeft(son)
+	} else {
+		n.parent().setRight(son)
+	}
+	son.setColor(n.color())
+	if son.isBlack() {
+		son.right().addExtra()
+	}
+	n = son.right()
 
+ADJUST1:
+	if n.brother().isRed() {
+		t.leftRotate(n.parent())
+		pc := n.parent().color()
+		n.parent().setColor(n.grandfather().color())
+		n.grandfather().setColor(pc)
+		goto ADJUST1
+	}
+	if n.left().isBlack() && n.right().isBlack() {
+		n.parent().turnBlack()
+		n.delExtra()
+		n = n.parent()
+		n.addExtra()
+		goto ADJUST1
+	}
+
+	if n.left().isRed() && n.right().isBlack() {
+		l := n.left()
+		t.rightRotate(n.brother())
+		lc := l.color()
+		l.setColor(n.color())
+		n.setColor(lc)
+	}
+
+	t.leftRotate(n.parent())
+	n.brother().setColor(n.parent().color())
+	n.parent().turnBlack()
+	n.uncle().turnBlack()
+	n.delExtra()
 }
 
 func (t *rbTree) delNode(n *node) {
@@ -190,10 +241,12 @@ func (t *rbTree) rightRotate(x *node) bool {
 	return true
 }
 
-func (t *rbTree) setRoot(n *node) {
+func (t *rbTree) setRoot(n *node) bool {
 	if n == nil {
-		return
+		t.r = nil
+		return true
 	}
 	n.p = nil
 	t.r = n
+	return true
 }
