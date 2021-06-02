@@ -30,8 +30,8 @@ func TestNode_Left(t *testing.T) {
 	n1.setLeft(n2)
 	AssertIsTrue(n1.left().val() == 2)
 	AssertIsTrue(n1.left().parent() == n1)
-	AssertIsTrue(!n1.left().isLeaf())
-	AssertIsTrue(n1.left().left().isLeaf())
+	AssertIsTrue(!n1.left().isLeafNode())
+	AssertIsTrue(n1.left().left().isLeafNode())
 	AssertIsTrue(!n1.left().isRed())
 }
 
@@ -42,8 +42,8 @@ func TestNode_Right(t *testing.T) {
 
 	AssertIsTrue(n1.right().val() == 2)
 	AssertIsTrue(n1.right().parent() == n1)
-	AssertIsTrue(!n1.right().isLeaf())
-	AssertIsTrue(n1.right().right().isLeaf())
+	AssertIsTrue(!n1.right().isLeafNode())
+	AssertIsTrue(n1.right().right().isLeafNode())
 	AssertIsTrue(!n1.right().isRed())
 }
 

@@ -2,8 +2,6 @@ package red_black_trees
 
 const BLACK = false
 const RED = true
-const EXTRA = true
-const NON_EXTRA = false
 
 type V int
 
@@ -13,7 +11,6 @@ type node struct {
 	r   *node // right node
 	p   *node // parent
 	c   bool  // color
-	e   bool  // extra black
 	nil bool  // leaf-node is nil
 }
 
@@ -104,11 +101,11 @@ func (n *node) sonCount() (s int) {
 	return
 }
 
-func (n *node) isLeaf() bool {
+func (n *node) isLeafNode() bool {
 	return n.nil
 }
 
-func (n *node) isNonLeaf() bool {
+func (n *node) isNonLeafNode() bool {
 	return !n.nil
 }
 
@@ -142,16 +139,15 @@ func (n *node) turnBlack() {
 	n.c = BLACK
 }
 
-func (n *node) addExtra() {
-	n.e = EXTRA
-}
-
-func (n *node) delExtra() {
-	n.e = NON_EXTRA
-}
-
-func (n *node) hasExtra() bool {
-	return n.e
+func (n *node) findSuccessorNode() (s *node) {
+	if n.right().isLeafNode() {
+		return nil
+	}
+	s = n.right()
+	for s.left().isLeafNode() {
+		s = s.left()
+	}
+	return
 }
 
 func (n *node) isBlack() bool {

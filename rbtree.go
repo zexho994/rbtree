@@ -17,10 +17,10 @@ func (t *rbTree) root() *node {
 
 // find 值为v的节点
 // 如果存在，返回该节点，该节点肯定不是叶子节点
-// 否则，返回的节点 isLeaf() == true
+// 否则，返回的节点 isLeafNode() == true
 func (t *rbTree) find(v V) *node {
 	m := t.root()
-	for m.isNonLeaf() {
+	for m.isNonLeafNode() {
 		if v > m.val() {
 			m = m.right()
 		} else if v < m.val() {
@@ -36,7 +36,7 @@ func (t *rbTree) find(v V) *node {
 // insert a node into rbTree
 func (t *rbTree) insert(v V) {
 	n := t.find(v)
-	if n.isNonLeaf() {
+	if n.isNonLeafNode() {
 		return
 	}
 	// 保存新的节点到对应的位置
@@ -90,7 +90,7 @@ CASE3: // 当 node父节点的关系 == node父节点与祖父节点的关系 �
 // remove a node from rbTree
 func (t *rbTree) remove(v V) {
 	n := t.find(v)
-	if n.isLeaf() {
+	if n.isLeafNode() {
 		return
 	}
 	if isRoot(n) && t.setRoot(nil) {
@@ -106,7 +106,7 @@ func (t *rbTree) remove(v V) {
 	}
 	var son *node
 	if n.sonCount() == 1 {
-		if n.left().isNonLeaf() {
+		if n.left().isNonLeafNode() {
 			son = n.left()
 		} else {
 			son = n.right()
@@ -121,21 +121,19 @@ func (t *rbTree) remove(v V) {
 	}
 	// rm case 2
 	son = n.right()
-	if son.left().isLeaf() {
-		if n.isLeaf() {
+	// left is successor node
+	if son.left().isLeafNode() {
+		if n.isLeft() {
 			n.parent().setLeft(son)
 		} else {
 			n.parent().setRight(son)
 		}
 		son.setColor(n.color())
 		n = son.right()
-		n.addExtra()
 		goto ADJUST1
 	}
 	// rm case3
-	for son.left().isNonLeaf() {
-		son = son.left()
-	}
+	son = t.findSuccessorNode(son)
 	son.parent().setLeft(son.right())
 	son.setLeft(n.left())
 	son.setRight(n.right())
@@ -145,9 +143,6 @@ func (t *rbTree) remove(v V) {
 		n.parent().setRight(son)
 	}
 	son.setColor(n.color())
-	if son.isBlack() {
-		son.right().addExtra()
-	}
 	n = son.right()
 
 ADJUST1:
@@ -160,9 +155,7 @@ ADJUST1:
 	}
 	if n.left().isBlack() && n.right().isBlack() {
 		n.parent().turnBlack()
-		n.delExtra()
 		n = n.parent()
-		n.addExtra()
 		goto ADJUST1
 	}
 
@@ -178,7 +171,16 @@ ADJUST1:
 	n.brother().setColor(n.parent().color())
 	n.parent().turnBlack()
 	n.uncle().turnBlack()
-	n.delExtra()
+}
+
+func (t *rbTree) findSuccessorNode(son *node) *node {
+	if son == nil || son.isLeafNode() {
+		panic("error")
+	}
+	for son.left().isNonLeafNode() {
+		son = son.left()
+	}
+	return son
 }
 
 func (t *rbTree) delNode(n *node) {
@@ -196,7 +198,7 @@ func isRoot(n *node) bool {
 // 2. x的右子指针指向c的左子节点
 // 3. c的左子指针指向x
 func (t *rbTree) leftRotate(x *node) bool {
-	if x == nil || x.isLeaf() || x.right().isLeaf() {
+	if x == nil || x.isLeafNode() || x.right().isLeafNode() {
 		return false
 	}
 	c := x.right()
@@ -221,7 +223,7 @@ func (t *rbTree) leftRotate(x *node) bool {
 // 2.x左节点指向B右节点
 // 3.B右节点指向x
 func (t *rbTree) rightRotate(x *node) bool {
-	if x == nil || x.isLeaf() || x.left().isLeaf() {
+	if x == nil || x.isLeafNode() || x.left().isLeafNode() {
 		return false
 	}
 	b := x.left()

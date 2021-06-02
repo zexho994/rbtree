@@ -13,8 +13,8 @@ func TestRbTree_Find(t *testing.T) {
 	t1.root().setRight(newRedNode(3))
 	AssertNotNull(t1.find(1))
 	AssertNotNull(t1.find(3))
-	AssertIsTrue(!t1.find(3).isLeaf())
-	AssertIsTrue(t1.find(4).isLeaf())
+	AssertIsTrue(!t1.find(3).isLeafNode())
+	AssertIsTrue(t1.find(4).isLeafNode())
 }
 
 //            11b
@@ -143,7 +143,7 @@ func TestIsRbTree(t *testing.T) {
 }
 
 func isRbtree(n *node, s int) int {
-	if n.isLeaf() {
+	if n.isLeafNode() {
 		return s
 	}
 	if n.isRed() {
@@ -174,5 +174,4 @@ func TestRbTree_remove(t1 *testing.T) {
 
 	rbt.remove(25)
 	isRbtree(rbt.root(), 0)
-
 }
