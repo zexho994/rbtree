@@ -92,10 +92,10 @@ func (n *node) uncle() *node {
 
 func (n *node) sonCount() (s int) {
 	s = 2
-	if n.left().isLeaf() {
+	if n.left().isLeafNode() {
 		s--
 	}
-	if n.r.isLeaf() {
+	if n.r.isLeafNode() {
 		s--
 	}
 	return
