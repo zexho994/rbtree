@@ -7,6 +7,7 @@ import (
 )
 
 func Test_Using(t *testing.T) {
+	// create a rb-tree
 	tree := rbtree.NewRbTree(100)
 
 	tree.Insert(10)
