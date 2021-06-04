@@ -64,7 +64,7 @@ func (n *node) setParent(p *node) {
 
 func (n *node) brother() *node {
 	if n == nil || n.parent() == nil {
-		return nil
+		panic("get brother node error")
 	}
 	if n.isLeft() {
 		return n.parent().right()
@@ -151,10 +151,16 @@ func (n *node) findSuccessorNode() (s *node) {
 }
 
 func (n *node) isBlack() bool {
+	if n == nil {
+		return true
+	}
 	return n.c == BLACK
 }
 
 func (n *node) isRed() bool {
+	if n == nil {
+		return false
+	}
 	return n.c == RED
 }
 
@@ -166,7 +172,10 @@ func (n *node) isLeft() bool {
 	if n.parent() == nil {
 		panic("node p is nil")
 	}
-	return n.val() < n.parent().val()
+	if n.isLeafNode() {
+		return false
+	}
+	return n.val() <= n.parent().val()
 }
 
 func (n *node) isRight() bool {

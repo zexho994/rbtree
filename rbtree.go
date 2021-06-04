@@ -89,12 +89,111 @@ CASE3: // 当 node父节点的关系 == node父节点与祖父节点的关系 �
 
 // remove a node from rbTree
 func (t *rbTree) remove(v V) {
+	f := t.find(v)
+	if f.isLeafNode() {
+		return
+	}
+	var fix *node
+	color := f.color()
+	if f.left().isLeafNode() {
+		fix = f.right()
+		t.replace(f, f.right())
+	} else if f.right().isLeafNode() {
+		fix = f.left()
+		t.replace(f, f.left())
+	} else {
+		successor := t.findSuccessorNode(f.right())
+		color = successor.color()
+		fix = successor.right()
+		if f != successor.parent() {
+			t.replace(successor, successor.right())
+			successor.setRight(f.right())
+		}
+		t.replace(f, successor)
+		successor.setColor(f.color())
+		successor.setLeft(f.left())
+	}
+	if color == BLACK {
+		t.fixRemove(fix)
+	}
+}
+
+func (t *rbTree) replace(u, v *node) {
+	if isRoot(u) {
+		t.setRoot(v)
+	} else if u.isLeft() {
+		u.parent().setLeft(v)
+	} else {
+		u.parent().setRight(v)
+	}
+}
+
+func (t *rbTree) fixRemove(n *node) {
+START:
+	if isRoot(n) || n.isRed() {
+		n.turnBlack()
+		return
+	}
+	if n.isLeft() {
+		b := n.parent().right()
+		if b.isRed() {
+			b.turnBlack()
+			n.parent().turnRed()
+			t.leftRotate(n.parent())
+			b = n.parent().right()
+			if b.isLeafNode() {
+				goto START
+			}
+		}
+		if b.left().isBlack() && b.right().isBlack() {
+			b.turnRed()
+			n = n.parent()
+			goto START
+		} else if b.left().isRed() {
+			b.left().turnBlack()
+			b.turnRed()
+			t.rightRotate(b)
+			b = n.parent().right()
+		}
+		if b.right().isRed() {
+			b.setColor(b.parent().color())
+			b.right().turnBlack()
+			b.parent().turnBlack()
+			t.leftRotate(b.parent())
+			n = t.root()
+		}
+		goto START
+	}
+	b := n.parent().left()
+	if b.isRed() {
+		b.turnBlack()
+		n.parent().turnRed()
+		t.rightRotate(n.parent())
+		b = n.parent().left()
+		if b.isLeafNode() {
+			goto START
+		}
+	}
+	if b.right().isBlack() && b.left().isBlack() {
+		b.turnRed()
+		n = n.parent()
+		goto START
+	} else if b.right().isRed() {
+		b.right().turnBlack()
+		b.turnRed()
+		t.leftRotate(b)
+		b = n.parent().left()
+	}
+	if b.left().isRed() {
+		b.setColor(n.parent().color())
+		n.parent().turnBlack()
+		b.left().turnBlack()
+		t.rightRotate(n.parent())
+		n = t.root()
+	}
 }
 
 func (t *rbTree) findSuccessorNode(son *node) *node {
-	if son == nil || son.isLeafNode() {
-		panic("error")
-	}
 	for son.left().isNonLeafNode() {
 		son = son.left()
 	}
