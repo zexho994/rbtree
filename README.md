@@ -19,3 +19,7 @@
 ## 整体流程
 ### 插入操作
 ![](https://tva1.sinaimg.cn/large/008i3skNgy1gr0ul09vtaj30u011z14j.jpg)
+
+XXXXX：
+https://segmentfault.com/a/1190000022278733
+https://www.huximi.com/2020/05/13/red-black-tree/
