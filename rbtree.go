@@ -87,6 +87,16 @@ CASE3: // 当 node父节点的关系 == node父节点与祖父节点的关系 �
 	n.brother().turnRed()
 }
 
+func (t *rbTree) replace(u, v *node) {
+	if isRoot(u) {
+		t.setRoot(v)
+	} else if u.isLeft() {
+		u.parent().setLeft(v)
+	} else {
+		u.parent().setRight(v)
+	}
+}
+
 // remove a node from rbTree
 func (t *rbTree) remove(v V) {
 	f := t.find(v)
@@ -115,16 +125,6 @@ func (t *rbTree) remove(v V) {
 	}
 	if color == BLACK {
 		t.fixRemove(fix)
-	}
-}
-
-func (t *rbTree) replace(u, v *node) {
-	if isRoot(u) {
-		t.setRoot(v)
-	} else if u.isLeft() {
-		u.parent().setLeft(v)
-	} else {
-		u.parent().setRight(v)
 	}
 }
 
