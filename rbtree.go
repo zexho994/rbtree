@@ -1,11 +1,11 @@
-package red_black_trees
+package rbtree
 
 // rb.node is do not allow duplication
 type rbTree struct {
 	r *node // root
 }
 
-func newRbTree(v V) *rbTree {
+func NewRbTree(v V) *rbTree {
 	return &rbTree{
 		r: newBlackNode(v),
 	}
@@ -15,10 +15,10 @@ func (t *rbTree) root() *node {
 	return t.r
 }
 
-// find 值为v的节点
+// Find 值为v的节点
 // 如果存在，返回该节点，该节点肯定不是叶子节点
 // 否则，返回的节点 isLeafNode() == true
-func (t *rbTree) find(v V) *node {
+func (t *rbTree) Find(v V) *node {
 	m := t.root()
 	for m.isNonLeafNode() {
 		if v > m.val() {
@@ -33,9 +33,9 @@ func (t *rbTree) find(v V) *node {
 	return m
 }
 
-// insert a node into rbTree
-func (t *rbTree) insert(v V) {
-	n := t.find(v)
+// Insert a node into rbTree
+func (t *rbTree) Insert(v V) {
+	n := t.Find(v)
 	if n.isNonLeafNode() {
 		return
 	}
@@ -97,9 +97,9 @@ func (t *rbTree) replace(u, v *node) {
 	}
 }
 
-// remove a node from rbTree
-func (t *rbTree) remove(v V) {
-	f := t.find(v)
+// Remove a node from rbTree
+func (t *rbTree) Remove(v V) {
+	f := t.Find(v)
 	if f.isLeafNode() {
 		return
 	}

@@ -1,4 +1,4 @@
-package red_black_trees
+package rbtree
 
 const BLACK = false
 const RED = true

@@ -1,4 +1,4 @@
-package red_black_trees
+package rbtree
 
 import "testing"
 
